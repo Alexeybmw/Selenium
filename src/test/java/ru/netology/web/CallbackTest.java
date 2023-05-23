@@ -53,6 +53,7 @@ class CallbackTest {
 
 
     }
+
     @Test
     void shouldTestV2() {
         driver.get("http://localhost:9999");
@@ -66,6 +67,7 @@ class CallbackTest {
 
 
     }
+
     @Test
     void shouldTestV3() {
         driver.get("http://localhost:9999");
@@ -78,7 +80,9 @@ class CallbackTest {
         assertEquals(expected, actual);
 
 
-    }@Test
+    }
+
+    @Test
     void shouldTestV4() {
         driver.findElement(By.cssSelector("[data-test-id='name'] input")).sendKeys("Волков Василий");
         driver.findElement(By.cssSelector("[data-test-id='phone'] input")).sendKeys("+79260321212");
