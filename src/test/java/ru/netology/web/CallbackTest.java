@@ -26,7 +26,6 @@ class CallbackTest {
     }
 
 
-
     @BeforeEach
     void setUp() {
         ChromeOptions options = new ChromeOptions();
@@ -44,8 +43,7 @@ class CallbackTest {
     }
 
     @Test
-    void shouldTestV1() {
-        driver.get("http://localhost:9999");
+    void shouldSuccessfulSendingOfTheCardApplication() {
         driver.findElement(By.cssSelector("[data-test-id='name'] input")).sendKeys("Волков Василий");
         driver.findElement(By.cssSelector("[data-test-id='phone'] input")).sendKeys("+79260321212");
         driver.findElement(By.cssSelector("[data-test-id='agreement'] .checkbox__box")).click();
@@ -56,10 +54,21 @@ class CallbackTest {
 
 
     }
+    @Test
+    void shouldSurnameNotSpecified() {
+        driver.findElement(By.cssSelector("[data-test-id='name'] input")).sendKeys("");
+        driver.findElement(By.cssSelector("[data-test-id='phone'] input")).sendKeys("+79260321212");
+        driver.findElement(By.cssSelector("[data-test-id='agreement'] .checkbox__box")).click();
+        driver.findElement(By.className("button")).click();
+        String expected = "Поле обязательно для заполнения";
+        String actual = driver.findElement(By.cssSelector("[data-test-id='name'].input_invalid .input__sub")).getText().trim();
+        assertEquals(expected, actual);
+
+
+    }
 
     @Test
-    void shouldTestV2() {
-        driver.get("http://localhost:9999");
+    void shouldSurnameIsIncorrect() {
         driver.findElement(By.cssSelector("[data-test-id='name'] input")).sendKeys("Volkov Vasiliy");
         driver.findElement(By.cssSelector("[data-test-id='phone'] input")).sendKeys("+79260321212");
         driver.findElement(By.cssSelector("[data-test-id='agreement'] .checkbox__box")).click();
@@ -72,8 +81,7 @@ class CallbackTest {
     }
 
     @Test
-    void shouldTestV3() {
-        driver.get("http://localhost:9999");
+    void shouldWrongPhoneNumber() {
         driver.findElement(By.cssSelector("[data-test-id='name'] input")).sendKeys("Волков Василий");
         driver.findElement(By.cssSelector("[data-test-id='phone'] input")).sendKeys("+79260321");
         driver.findElement(By.cssSelector("[data-test-id='agreement'] .checkbox__box")).click();
@@ -82,16 +90,26 @@ class CallbackTest {
         String actual = driver.findElement(By.cssSelector("[data-test-id='phone'].input_invalid .input__sub")).getText().trim();
         assertEquals(expected, actual);
 
+    }
+
+    @Test
+    void shouldPhoneNumberNotSpecified() {
+        driver.findElement(By.cssSelector("[data-test-id='name'] input")).sendKeys("Волков Василий");
+        driver.findElement(By.cssSelector("[data-test-id='phone'] input")).sendKeys("");
+        driver.findElement(By.cssSelector("[data-test-id='agreement'] .checkbox__box")).click();
+        driver.findElement(By.className("button")).click();
+        String expected = "Поле обязательно для заполнения";
+        String actual = driver.findElement(By.cssSelector("[data-test-id='phone'].input_invalid .input__sub")).getText().trim();
+        assertEquals(expected, actual);
 
     }
 
     @Test
-    void shouldTestV4() {
+    void shouldCheckTheBox() {
         driver.findElement(By.cssSelector("[data-test-id='name'] input")).sendKeys("Волков Василий");
         driver.findElement(By.cssSelector("[data-test-id='phone'] input")).sendKeys("+79260321212");
         driver.findElement(By.cssSelector("button.button_view_extra")).click();
         assertTrue(driver.findElement(By.cssSelector("[data-test-id='agreement'].input_invalid .checkbox__text")).isDisplayed());
-
 
     }
 
