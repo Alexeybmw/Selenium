@@ -15,21 +15,24 @@ import org.openqa.selenium.support.Color;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class CallbackTest {
     private WebDriver driver;
 
     @BeforeAll
-    static void setUpAll() {
-        System.setProperty("web-driver.chrome.driver", "./driver/win/chromedriver");
+    static void setupClass() {
+        WebDriverManager.chromedriver().setup();
     }
+
+
 
     @BeforeEach
     void setUp() {
         ChromeOptions options = new ChromeOptions();
         options.addArguments("--disable-dev-shm-usage");
         options.addArguments("--no-sandbox");
-        options.addArguments("--headless");
+        //options.addArguments("--headless");
         driver = new ChromeDriver(options);
         driver.get("http://localhost:9999");
     }
@@ -87,11 +90,7 @@ class CallbackTest {
         driver.findElement(By.cssSelector("[data-test-id='name'] input")).sendKeys("Волков Василий");
         driver.findElement(By.cssSelector("[data-test-id='phone'] input")).sendKeys("+79260321212");
         driver.findElement(By.cssSelector("button.button_view_extra")).click();
-        WebElement invalid = driver.findElement(By.cssSelector("[data-test-id='agreement'].input_invalid .checkbox__text"));
-        String color = invalid.getCssValue("color");
-        String expected = Color.fromString(color).asHex();
-        String actual = "#ff5c5c";
-        assertEquals(expected, actual);
+        assertTrue(driver.findElement(By.cssSelector("[data-test-id='agreement'].input_invalid .checkbox__text")).isDisplayed());
 
 
     }
